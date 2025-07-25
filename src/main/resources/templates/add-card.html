@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Добавить карту</title>
+</head>
+<body>
+<h1>Выдать карту клиенту</h1>
+
+<form th:action="@{/cards}" method="post">
+    <label>Номер карты: <input type="text" name="cardNumber" required></label><br>
+    <label>Дата выпуска: <input type="date" name="issueDate"></label><br>
+    <label>Дата окончания: <input type="date" name="expiryDate"></label><br>
+    <label>Клиент:
+        <select name="clientId">
+            <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.fullName}"></option>
+        </select>
+    </label><br><br>
+    <button type="submit">Сохранить карту</button>
+</form>
+
+<a href="/clients">← Назад к клиентам</a>
+</body>
+</html>

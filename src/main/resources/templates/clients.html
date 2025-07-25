@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Клиенты</title>
+</head>
+<body>
+<h1>Список клиентов</h1>
+
+<form th:action="@{/clients}" method="post">
+    <input type="text" name="fullName" placeholder="ФИО" required>
+    <input type="date" name="birthDate" required>
+    <button type="submit">Добавить клиента</button>
+</form>
+
+<h2>Клиенты:</h2>
+<table border="1">
+    <tr>
+        <th>ФИО</th>
+        <th>Дата рождения</th>
+        <th>Карты</th>
+    </tr>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.fullName}"></td>
+        <td th:text="${client.birthDate}"></td>
+        <td>
+            <ul>
+                <li th:each="card : ${client.cards}">
+                    <span th:text="'№ ' + ${card.cardNumber} + ' (' + ${card.expiryDate} + ')'"></span>
+                    <span th:if="${card.active}"> — <strong>Активна</strong></span>
+                    <span th:if="${!card.active}"> — <em>Аннулирована</em></span>
+
+                    <!-- Кнопка аннулирования, только если карта активна -->
+                    <form th:if="${card.active}" th:action="@{'/cards/' + ${card.id} + '/deactivate'}" method="post" style="display:inline;">
+                        <button type="submit">Аннулировать</button>
+                    </form>
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+<br>
+<a href="/cards/new">Добавить карту</a>
+</body>
+</html>
